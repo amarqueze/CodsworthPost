@@ -1,13 +1,19 @@
 package publication
 
+import "outergeekhub.com/codsworthpost/domain/model/share"
+
 type PostService interface {
-	NewPublish(post *Post) (*Post, error)
-	EditPublish(post *Post) (*Post, error)
-	UnPublish(postId string) (*Post, error)
+	NewPublish(post *Post) (*Post, share.BusinessError)
+	EditPublish(post *Post) (*Post, share.BusinessError)
+	UnPublish(postId string) (*Post, share.BusinessError)
+
+	FindPost(postId string) (*Post, share.BusinessError)
+	FindPostsByCriteria() (*[]Post, share.BusinessError)
 }
 
 type CategoryService interface {
-	CreateCategory(category *Category) (*Category, error)
+	CreateCategory(category *Category) (*Category, share.BusinessError)
+	FindCategory(categoryId string) (*Category, share.BusinessError)
 }
 
 type UploadService interface {
@@ -15,6 +21,7 @@ type UploadService interface {
 }
 
 type AuthorService interface {
-	CreateAuthor(author *Author) (*Author, error)
-	EditAuthor(author *Author) (*Author, error)
+	CreateAuthor(author *Author) (*Author, share.BusinessError)
+	EditAuthor(author *Author) (*Author, share.BusinessError)
+	FindAuthor(authorId string) (*Author, share.BusinessError)
 }
