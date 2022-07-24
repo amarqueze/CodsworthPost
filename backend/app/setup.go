@@ -6,6 +6,11 @@ package app
 import "github.com/google/wire"
 
 func Setup() *Components {
-	wire.Build(PostProvider, PostPublisher, APIComponent)
+	wire.Build(
+		PostProvider,
+		PostPublisher,
+		HomeController,
+		APIComponent,
+	)
 	return new(Components)
 }

@@ -1,1 +1,0 @@
-# share structs and functionalities

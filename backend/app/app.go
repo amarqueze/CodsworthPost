@@ -5,6 +5,7 @@ import (
 
 	"outergeekhub.com/codsworthpost/domain/model/publication"
 	"outergeekhub.com/codsworthpost/domain/usecases"
+	"outergeekhub.com/codsworthpost/infrastructure/entry-points/web"
 )
 
 type App struct {
@@ -16,8 +17,9 @@ type App struct {
 }
 
 type Components struct {
-	PostService   *publication.PostService
-	PostPublisher *usecases.PostPublisher
+	PostService    *publication.PostService
+	PostPublisher  *usecases.PostPublisher
+	HomeController *web.HomeController
 }
 
 func NewApplication(title, name, version string) *App {
@@ -28,18 +30,18 @@ func NewApplication(title, name, version string) *App {
 
 func initComponents(
 	postService publication.PostService,
-	postPublisher usecases.PostPublisher) *Components {
+	postPublisher usecases.PostPublisher,
+	homeController web.HomeController) *Components {
 
-	return &Components{PostService: &postService, PostPublisher: &postPublisher}
+	return &Components{
+		PostService:    &postService,
+		PostPublisher:  &postPublisher,
+		HomeController: &homeController,
+	}
 }
 
 func (app *App) Run() {
 	fmt.Printf("Run Application: %s v%s \n", app.Title, app.Version)
-	post := publication.NewPost().
-		Title("Any Great Post").
-		Summary("You will feel great when you read this Post").
-		Build()
-
-	postPublisher := app.Components.PostPublisher
-	postPublisher.Publish(post)
+	controller := app.Components.HomeController
+	controller.ReceiveRequest()
 }

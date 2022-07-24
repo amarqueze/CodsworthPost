@@ -9,6 +9,7 @@ package app
 import (
 	"outergeekhub.com/codsworthpost/domain/usecases"
 	"outergeekhub.com/codsworthpost/infrastructure/driven-adapters/post-provider"
+	"outergeekhub.com/codsworthpost/infrastructure/entry-points/web"
 )
 
 // Injectors from setup.go:
@@ -16,6 +17,7 @@ import (
 func Setup() *Components {
 	postService := post_Provider.NewPostService()
 	postPublisher := usecases.NewPostPublisher(postService)
-	components := initComponents(postService, postPublisher)
+	homeController := web.NewHomeController(postPublisher)
+	components := initComponents(postService, postPublisher, homeController)
 	return components
 }

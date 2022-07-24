@@ -1,4 +1,4 @@
-package apirest
+package web
 
 import (
 	"outergeekhub.com/codsworthpost/domain/model/publication"
@@ -9,7 +9,14 @@ type HomeController struct {
 	Publisher usecases.PostPublisher
 }
 
+func NewHomeController(publisher usecases.PostPublisher) HomeController {
+	return HomeController{Publisher: publisher}
+}
+
 func (controller HomeController) ReceiveRequest() {
-	post := publication.NewPost().Title("Fisrt Post").Build()
+	post := publication.NewPost().
+		Title("Any Great Post").
+		Summary("You will feel great when you read this Post").
+		Build()
 	controller.Publisher.Publish(post)
 }
