@@ -14,7 +14,7 @@ func NewHomeController(publisher usecases.PostPublisher) HomeController {
 }
 
 func (controller HomeController) ReceiveRequest() {
-	post := publication.NewPost().
+	post := publication.NewPost("en-EN").
 		Title("Any Great Post").
 		Summary("You will feel great when you read this Post").
 		Build()

@@ -19,11 +19,16 @@ type Post struct {
 	Tags            []string
 	DateCreated     string
 	DateEdition     string
-	IdWriter        string
+	Lang            string
+	Author          *Author
+	IsPrimary       bool
+	Reference       []string
 }
 
-func NewPost() *NewPostBuilder {
+func NewPost(lang string) *NewPostBuilder {
 	newPostBuilder := new(NewPostBuilder)
+	newPostBuilder.post.Lang = lang
+	newPostBuilder.post.IsPrimary = true
 	return newPostBuilder
 }
 
@@ -61,8 +66,13 @@ func (builder *NewPostBuilder) AddTags(tags []string) *NewPostBuilder {
 	return builder
 }
 
-func (builder *NewPostBuilder) Writer(idWriter string) *NewPostBuilder {
-	builder.post.IdWriter = idWriter
+func (builder *NewPostBuilder) Writer(author *Author) *NewPostBuilder {
+	builder.post.Author = author
+	return builder
+}
+
+func (builder *NewPostBuilder) Primary(isPrimary bool) *NewPostBuilder {
+	builder.post.IsPrimary = isPrimary
 	return builder
 }
 
@@ -89,8 +99,8 @@ func (builder *NewPostBuilder) Build() *Post {
 		panic(ProduceErrorPostState("Category is required"))
 	}
 
-	if len(builder.post.IdWriter) == 0 {
-		panic(ProduceErrorPostState("Writer is required"))
+	if builder.post.Author == nil {
+		panic(ProduceErrorPostState("Author is required"))
 	}
 
 	builder.post.Id = helper.Util{}.GenerateId()
@@ -100,6 +110,10 @@ func (builder *NewPostBuilder) Build() *Post {
 }
 
 func EditPost(id string) *EditPostBuilder {
+	if len(id) == 0 {
+		panic(ProduceErrorPostState("PostId is required"))
+	}
+
 	editPostBuilder := new(EditPostBuilder)
 	editPostBuilder.post.Id = id
 	return editPostBuilder
@@ -110,7 +124,11 @@ type EditPostBuilder struct {
 }
 
 func (builder *EditPostBuilder) Content(content string) *EditPostBuilder {
-	builder.post.Content = content
+	builder.post.Content = strings.TrimSpace(content)
+	if len(builder.post.Content) == 0 {
+		panic(ProduceErrorPostState("Content is required"))
+	}
+
 	return builder
 }
 
@@ -120,13 +138,23 @@ func (builder *EditPostBuilder) AddTags(tags []string) *EditPostBuilder {
 }
 
 func (builder *EditPostBuilder) Build() *Post {
-	builder.post.Content = strings.TrimSpace(builder.post.Content)
-	if len(builder.post.Content) == 0 {
-		panic(ProduceErrorPostState("Content is required"))
-	}
-
 	builder.post.DateEdition = time.Now().String()
 	return &builder.post
+}
+
+func AddReferencePost(postId, reference string) *Post {
+	if len(postId) == 0 {
+		panic(ProduceErrorPostState("PostId is required"))
+	}
+
+	if len(reference) == 0 {
+		panic(ProduceErrorPostState("Post reference is required"))
+	}
+
+	post := new(Post)
+	post.Id = postId
+	post.Reference = append(post.Reference, reference)
+	return post
 }
 
 type InvalidPostState struct {

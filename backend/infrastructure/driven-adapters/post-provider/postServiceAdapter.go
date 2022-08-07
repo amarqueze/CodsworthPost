@@ -22,8 +22,8 @@ func (adapter PostServiceAdapter) EditPublish(post *publication.Post) (*publicat
 }
 
 func (adapter PostServiceAdapter) UnPublish(postId string) (*publication.Post, share.BusinessError) {
-	postRemoved := publication.NewPost().Title("Any Great Post").Build()
-	return postRemoved, nil
+	postRemoved := publication.Post{Id: postId, Title: "Any Great Post", Lang: "en-En"}
+	return &postRemoved, nil
 }
 
 func (adapter PostServiceAdapter) FindPost(postId string) (*publication.Post, share.BusinessError) {
