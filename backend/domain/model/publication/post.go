@@ -15,7 +15,7 @@ type Post struct {
 	Summary         string
 	Content         string
 	PrimaryImageRef string
-	Category        Category
+	Category        *Category
 	Tags            []string
 	DateCreated     string
 	DateEdition     string
@@ -56,7 +56,7 @@ func (builder *NewPostBuilder) PrimaryImage(primaryImageRef string) *NewPostBuil
 	return builder
 }
 
-func (builder *NewPostBuilder) Category(category Category) *NewPostBuilder {
+func (builder *NewPostBuilder) Category(category *Category) *NewPostBuilder {
 	builder.post.Category = category
 	return builder
 }
@@ -95,7 +95,7 @@ func (builder *NewPostBuilder) Build() *Post {
 		panic(ProduceErrorPostState("Content is required"))
 	}
 
-	if builder.post.Category == (Category{}) || len(builder.post.Category.Name) == 0 {
+	if builder.post.Category == nil {
 		panic(ProduceErrorPostState("Category is required"))
 	}
 

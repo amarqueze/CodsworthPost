@@ -8,16 +8,16 @@ package app
 
 import (
 	"outergeekhub.com/codsworthpost/domain/usecases"
-	"outergeekhub.com/codsworthpost/infrastructure/driven-adapters/post-provider"
-	"outergeekhub.com/codsworthpost/infrastructure/entry-points/web"
+	"outergeekhub.com/codsworthpost/infrastructure/driven-adapters/firebaseDb-provider"
+	"outergeekhub.com/codsworthpost/infrastructure/entry-points/api_rest"
 )
 
 // Injectors from setup.go:
 
 func Setup() *Components {
-	postService := post_Provider.NewPostService()
+	postService := firebasedbprovider.NewPostService()
 	postPublisher := usecases.NewPostPublisher(postService)
-	homeController := web.NewHomeController(postPublisher)
-	components := initComponents(postService, postPublisher, homeController)
+	publishPostPostController := apirest.NewPublishPostPostController(postPublisher)
+	components := initComponents(publishPostPostController)
 	return components
 }

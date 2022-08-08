@@ -9,7 +9,7 @@ func Setup() *Components {
 	wire.Build(
 		PostProvider,
 		PostPublisher,
-		HomeController,
+		PublishPostPostController,
 		APIComponent,
 	)
 	return new(Components)

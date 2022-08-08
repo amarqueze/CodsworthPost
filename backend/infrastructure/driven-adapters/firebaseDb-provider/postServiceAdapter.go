@@ -1,4 +1,4 @@
-package post_Provider
+package firebasedbprovider
 
 import (
 	"outergeekhub.com/codsworthpost/domain/model/publication"

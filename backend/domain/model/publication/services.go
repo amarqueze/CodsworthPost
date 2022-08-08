@@ -13,11 +13,11 @@ type PostService interface {
 
 type CategoryService interface {
 	CreateCategory(category *Category) (*Category, share.BusinessError)
-	FindCategory(categoryId string) (*Category, share.BusinessError)
+	FindCategory(categoryName string) (*Category, share.BusinessError)
 }
 
 type UploadService interface {
-	UploadMedia() (string, error)
+	UploadMedia() (string, share.BusinessError)
 }
 
 type AuthorService interface {

@@ -3,11 +3,17 @@ package app
 import (
 	"github.com/google/wire"
 	"outergeekhub.com/codsworthpost/domain/usecases"
-	post_Provider "outergeekhub.com/codsworthpost/infrastructure/driven-adapters/post-provider"
-	"outergeekhub.com/codsworthpost/infrastructure/entry-points/web"
+	firebasedbprovider "outergeekhub.com/codsworthpost/infrastructure/driven-adapters/firebaseDb-provider"
+	apirest "outergeekhub.com/codsworthpost/infrastructure/entry-points/api_rest"
 )
 
-var PostProvider = wire.NewSet(post_Provider.NewPostService)
+//** Driven Adapters
+var PostProvider = wire.NewSet(firebasedbprovider.NewPostService)
+
+//** Uses Cases
 var PostPublisher = wire.NewSet(usecases.NewPostPublisher)
-var HomeController = wire.NewSet(web.NewHomeController)
+
+//** Entry Points
+var PublishPostPostController = wire.NewSet(apirest.NewPublishPostPostController)
+
 var APIComponent = wire.NewSet(initComponents)

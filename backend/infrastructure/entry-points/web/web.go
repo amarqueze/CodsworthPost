@@ -20,3 +20,7 @@ func (controller HomeController) ReceiveRequest() {
 		Build()
 	controller.Publisher.Publish(post)
 }
+
+func health() {
+
+}

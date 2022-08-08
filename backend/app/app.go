@@ -3,9 +3,7 @@ package app
 import (
 	"fmt"
 
-	"outergeekhub.com/codsworthpost/domain/model/publication"
-	"outergeekhub.com/codsworthpost/domain/usecases"
-	"outergeekhub.com/codsworthpost/infrastructure/entry-points/web"
+	apirest "outergeekhub.com/codsworthpost/infrastructure/entry-points/api_rest"
 )
 
 type App struct {
@@ -17,9 +15,7 @@ type App struct {
 }
 
 type Components struct {
-	PostService    *publication.PostService
-	PostPublisher  *usecases.PostPublisher
-	HomeController *web.HomeController
+	PublishPostPostController *apirest.PublishPostPostController
 }
 
 func NewApplication(title, name, version string) *App {
@@ -29,19 +25,16 @@ func NewApplication(title, name, version string) *App {
 }
 
 func initComponents(
-	postService publication.PostService,
-	postPublisher usecases.PostPublisher,
-	homeController web.HomeController) *Components {
+	publishPostPostController apirest.PublishPostPostController,
+) *Components {
 
 	return &Components{
-		PostService:    &postService,
-		PostPublisher:  &postPublisher,
-		HomeController: &homeController,
+		PublishPostPostController: &publishPostPostController,
 	}
 }
 
 func (app *App) Run() {
 	fmt.Printf("Run Application: %s v%s \n", app.Title, app.Version)
-	controller := app.Components.HomeController
+	controller := app.Components.PublishPostPostController
 	controller.ReceiveRequest()
 }
